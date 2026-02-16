@@ -1,0 +1,139 @@
+class AllAnimalModel {
+  final int id;
+  final String aadharId;
+  final String animalName;
+  final String animalType;
+  final String breed;
+  final String dateOfBirth;
+  final String gender;
+  final String color;
+  final String identificationMark;
+  final String uniqueFeatures;
+  final String microchipNo;
+  final String tattooMark;
+  final bool isDonor;
+  final String address;
+  final String pincode;
+  final String state;
+  final String stateCode;
+  final String bloodGroup;
+  final int photoId;
+  final String photoUrl;
+  final String? photoThumbnail;
+  final String? photoMedium;
+  final String status;
+  final String? qrCode;
+  final String? pdfPath;
+  final String? rejectionReason;
+  final String createdAt;
+  final String updatedAt;
+  final String? approvedAt;
+  final String? rejectedAt;
+
+  AllAnimalModel({
+    required this.id,
+    required this.aadharId,
+    required this.animalName,
+    required this.animalType,
+    required this.breed,
+    required this.dateOfBirth,
+    required this.gender,
+    required this.color,
+    required this.identificationMark,
+    required this.uniqueFeatures,
+    required this.microchipNo,
+    required this.tattooMark,
+    required this.isDonor,
+    required this.address,
+    required this.pincode,
+    required this.state,
+    required this.stateCode,
+    required this.bloodGroup,
+    required this.photoId,
+    required this.photoUrl,
+    this.photoThumbnail,
+    this.photoMedium,
+    required this.status,
+    this.qrCode,
+    this.pdfPath,
+    this.rejectionReason,
+    required this.createdAt,
+    required this.updatedAt,
+    this.approvedAt,
+    this.rejectedAt,
+  });
+
+  factory AllAnimalModel.fromJson(Map<String, dynamic> json) {
+    return AllAnimalModel(
+      id: json['id'],
+      aadharId: json['aadhar_id'] ?? '',
+      animalName: json['animal_name'] ?? '',
+      animalType: json['animal_type'] ?? '',
+      breed: json['breed'] ?? '',
+      dateOfBirth: json['date_of_birth'] ?? '',
+      gender: json['gender'] ?? '',
+      color: json['color'] ?? '',
+      identificationMark: json['identification_mark'] ?? '',
+      uniqueFeatures: json['unique_features'] ?? '',
+      microchipNo: json['microchip_no'] ?? '',
+      tattooMark: json['tattoo_mark'] ?? '',
+      isDonor: json['is_donor'] ?? false,
+      address: json['address'] ?? '',
+      pincode: json['pincode'] ?? '',
+      state: json['state'] ?? '',
+      stateCode: json['state_code'] ?? '',
+      bloodGroup: json['blood_group'] ?? '',
+      photoId: json['photo_id'] ?? 0,
+      photoUrl: json['photo_url'] ?? '',
+      photoThumbnail: json['photo_thumbnail'],
+      photoMedium: json['photo_medium'],
+      status: json['status'] ?? '',
+      qrCode: json['qr_code'],
+      pdfPath: json['pdf_path'],
+      rejectionReason: json['rejection_reason'],
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
+      approvedAt: json['approved_at'],
+      rejectedAt: json['rejected_at'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'aadhar_id': aadharId,
+      'animal_name': animalName,
+      'animal_type': animalType,
+      'breed': breed,
+      'date_of_birth': dateOfBirth,
+      'gender': gender,
+      'color': color,
+      'identification_mark': identificationMark,
+      'unique_features': uniqueFeatures,
+      'microchip_no': microchipNo,
+      'tattoo_mark': tattooMark,
+      'is_donor': isDonor,
+      'address': address,
+      'pincode': pincode,
+      'state': state,
+      'state_code': stateCode,
+      'blood_group': bloodGroup,
+      'photo_id': photoId,
+      'photo_url': photoUrl,
+      'photo_thumbnail': photoThumbnail,
+      'photo_medium': photoMedium,
+      'status': status,
+      'qr_code': qrCode,
+      'pdf_path': pdfPath,
+      'rejection_reason': rejectionReason,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      'approved_at': approvedAt,
+      'rejected_at': rejectedAt,
+    };
+  }
+
+  static List<AllAnimalModel> listFromJson(List<dynamic> jsonList) {
+    return jsonList.map((e) => AllAnimalModel.fromJson(e)).toList();
+  }
+}
