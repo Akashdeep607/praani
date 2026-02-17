@@ -62,7 +62,7 @@ class _DoctorAppointmentViewState extends State<DoctorAppointmentView> {
         title: const Text('My Appointments'),
         actions: [
           IconButton(
-              icon: const Icon(Icons.punch_clock_rounded),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 Navigator.push<bool>(
                   context,

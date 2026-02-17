@@ -5,6 +5,7 @@ import 'package:inspireui/utils/logs.dart';
 
 import '../../models/appointments/doctor_appointment_response.dart';
 import '../../models/appointments/doctor_model.dart';
+import '../../models/appointments/doctor_profile_model.dart' as dp;
 import '../../models/appointments/pet_appointment_response.dart';
 import '../../models/appointments/services_response_model.dart';
 import '../../models/appointments/working_hours_model.dart';
@@ -371,6 +372,52 @@ class AppointmentService {
       return DoctorWorkingHoursResponse.fromJson(decoded);
     } else {
       return null;
+    }
+  }
+
+  Future<dp.DoctorProfileResponse?> fetchDoctorsProfile(
+    String token,
+  ) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/praani-pet-care/v1/doctor/profile'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body);
+      return dp.DoctorProfileResponse.fromJson(decoded);
+    } else {
+      return null;
+    }
+  }
+
+  Future<bool> updateDoctorsProfile(String token, Map<String, dynamic> data) async {
+    final url = Uri.parse('$baseUrl/praani-pet-care/v1/doctor/profile');
+
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body);
+
+        if (decoded['success'] == true) {
+          return true;
+        }
+      }
+
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 

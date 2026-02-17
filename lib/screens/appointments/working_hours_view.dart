@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../../models/appointments/working_hours_model.dart';
 import 'appointment_service.dart';
@@ -32,7 +30,9 @@ class _WorkingHoursViewState extends State<WorkingHoursView> {
 
   late WorkingHoursModel workingHoursModel;
   bool isLoading = false;
-
+  bool isDataUpdated = false;
+  bool isAvailable = false;
+  bool initialIsAvailable = false;
   @override
   void initState() {
     super.initState();
@@ -52,14 +52,17 @@ class _WorkingHoursViewState extends State<WorkingHoursView> {
     }
   }
 
+  bool get isAvailabilityChanged => isAvailable != initialIsAvailable;
+
   /// 🔥 Load and update screen
   Future<void> loadWorkingHours() async {
     setState(() => isLoading = true);
 
-    final response = await AppointmentService().fetchWorkingHours(widget.token);
+    // final response = await AppointmentService().fetchWorkingHours(widget.token);
+    final docProfile = await AppointmentService().fetchDoctorsProfile(widget.token);
 
-    if (response != null && response.success) {
-      final fetchedModel = response.data.workingHours;
+    if (docProfile != null && docProfile.success) {
+      final fetchedModel = docProfile.data.workingHours;
 
       /// Ensure all 7 days exist
       for (var day in days) {
@@ -71,6 +74,8 @@ class _WorkingHoursViewState extends State<WorkingHoursView> {
 
       setState(() {
         workingHoursModel = fetchedModel;
+        isAvailable = docProfile.data.isAvailable;
+        initialIsAvailable = docProfile.data.isAvailable;
       });
     }
 
@@ -121,6 +126,28 @@ class _WorkingHoursViewState extends State<WorkingHoursView> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        isAvailable ? 'Available' : 'Unavailable',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: isAvailable ? Colors.green : Colors.red,
+                        ),
+                      ),
+                      Switch(
+                        value: isAvailable,
+                        activeColor: Colors.green,
+                        onChanged: (value) {
+                          setState(() {
+                            // initialIsAvailable = value;
+                            isAvailable = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: days.length,
@@ -214,33 +241,72 @@ class _WorkingHoursViewState extends State<WorkingHoursView> {
                     height: 50,
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        final json = workingHoursModel.toJson();
-                        debugPrint(json.toString());
+                      onPressed: isDataUpdated
+                          ? null
+                          : () async {
+                              final json = workingHoursModel.toJson();
+                              debugPrint(json.toString());
 
-                        setState(() => isLoading = true);
+                              setState(() => isDataUpdated = true);
 
-                        final success = await AppointmentService().updateWorkingHours(widget.token, json);
+                              try {
+                                final service = AppointmentService();
 
-                        setState(() => isLoading = false);
+                                // 1️⃣ Update Working Hours
+                                final workingHoursSuccess = await service.updateWorkingHours(
+                                  widget.token,
+                                  json,
+                                );
 
-                        if (success) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Working hours updated successfully'),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Failed to update working hours'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Save'),
+                                // 2️⃣ Update Availability ONLY if changed
+                                var availabilitySuccess = true;
+
+                                if (isAvailabilityChanged) {
+                                  availabilitySuccess = await service.updateDoctorsProfile(
+                                    widget.token,
+                                    {
+                                      'isAvailable': isAvailable,
+                                    },
+                                  );
+                                } 
+
+                                final isSuccess = workingHoursSuccess && availabilitySuccess;
+
+                                if (!mounted) return;
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      isSuccess ? 'Updated successfully' : 'Failed to update',
+                                    ),
+                                    backgroundColor: isSuccess ? Colors.green : Colors.red,
+                                  ),
+                                );
+                              } catch (e) {
+                                if (!mounted) return;
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Something went wrong'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              } finally {
+                                if (mounted) {
+                                  setState(() => isDataUpdated = false);
+                                }
+                              }
+                            },
+                      child: isDataUpdated
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text('Save'),
                     ),
                   ),
                 ],
