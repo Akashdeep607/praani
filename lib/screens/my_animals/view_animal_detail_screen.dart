@@ -10,11 +10,11 @@ class ViewAnimalDetailScreen extends StatelessWidget {
   });
 
   String get _imageUrl {
-    if (animal.photoMedium != null && animal.photoMedium!.isNotEmpty) {
-      return animal.photoMedium!;
+    if (animal.photoUrl.isNotEmpty) {
+      return animal.photoUrl;
     }
-    if (animal.photoThumbnail != null && animal.photoThumbnail!.isNotEmpty) {
-      return animal.photoThumbnail!;
+    if (animal.photoUrl.isNotEmpty) {
+      return animal.photoUrl;
     }
     if (animal.photoUrl.isNotEmpty) {
       return animal.photoUrl;
@@ -47,10 +47,10 @@ class ViewAnimalDetailScreen extends StatelessWidget {
             ]),
             _section('Identification', [
               _info('Aadhar ID', animal.aadharId),
-              _info('Microchip No', animal.microchipNo),
+              _info('Microchip No', animal.microchipNo ?? ''),
               _info('Tattoo Mark', _nullable(animal.tattooMark)),
-              _info('Identification Mark', animal.identificationMark),
-              _info('Unique Features', animal.uniqueFeatures),
+              _info('Identification Mark', animal.identificationMark ?? ''),
+              _info('Unique Features', animal.uniqueFeatures ?? ''),
             ]),
             _section('Health & Donor', [
               _info('Blood Group', animal.bloodGroup),
@@ -59,14 +59,14 @@ class ViewAnimalDetailScreen extends StatelessWidget {
             _section('Address', [
               _info('Address', animal.address),
               _info('Pincode', animal.pincode),
-              _info('State', animal.state),
-              _info('State Code', animal.stateCode),
+              // _info('State', animal.state),
+              _info('State Code', animal.pincode),
             ]),
             _section('Status & Approval', [
               _info('Status', animal.status.toUpperCase()),
-              _info('Rejection Reason', _nullable(animal.rejectionReason)),
-              _info('Approved At', _nullable(animal.approvedAt)),
-              _info('Rejected At', _nullable(animal.rejectedAt)),
+              // _info('Rejection Reason', _nullable(animal.rejectionReason)),
+              // _info('Approved At', _nullable(animal.approvedAt)),
+              // _info('Rejected At', _nullable(animal.rejectedAt)),
             ]),
             _section('System Info', [
               _info('Created At', animal.createdAt),

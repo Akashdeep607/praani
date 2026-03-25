@@ -173,14 +173,14 @@ class _AddAnimalScreenState extends State<AddAnimalScreen> with WidgetsBindingOb
     breedCtrl.text = animal.breed;
     dobCtrl.text = animal.dateOfBirth;
     colorCtrl.text = animal.color;
-    uniqueFeaturesCtrl.text = animal.uniqueFeatures;
-    microchipCtrl.text = animal.microchipNo;
-    tattooCtrl.text = animal.tattooMark;
-    identificationCtrl.text = animal.identificationMark;
+    uniqueFeaturesCtrl.text = animal.uniqueFeatures ?? '';
+    microchipCtrl.text = animal.microchipNo ?? '';
+    tattooCtrl.text = animal.tattooMark ?? '';
+    identificationCtrl.text = animal.identificationMark ?? '';
     // bloodGroupCtrl.text = animal.bloodGroup;
     addressCtrl.text = animal.address;
     pincodeCtrl.text = animal.pincode;
-    stateCtrl.text = animal.state;
+    // stateCtrl.text = animal.state;
 
     selectedAnimal = animal.animalType;
     gender = animal.gender;

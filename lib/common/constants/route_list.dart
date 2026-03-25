@@ -7,6 +7,10 @@ class RouteList {
   static const String myAnimals = 'myAnimals';
   static const String appointments = 'appointments';
   static const String doctorsAppointment = 'doctorsAppointment';
+  static const String addHealthRecords = 'addHealthRecords';
+  static const String healthRecords = 'healthRecords';
+  static const String addDoctorHealthRecords = 'addDoctorHealthRecords';
+  static const String doctorHealthRecords = 'doctorHealthRecords';
   static const String onBoarding = 'onBoarding';
   static const String dashboard = 'dashboard';
   static const String homeSearch = 'home-search';

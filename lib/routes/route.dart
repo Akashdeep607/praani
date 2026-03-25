@@ -37,6 +37,10 @@ import '../screens/checkout/widgets/success.dart';
 import '../screens/checkout/widgets/web_success.dart';
 import '../screens/dynamic/dynamic_scrollable_screen.dart';
 import '../screens/dynamic/dynamic_tabmenu_screen.dart';
+import '../screens/health_records/add_doctor_health_records_view.dart';
+import '../screens/health_records/add_health_records_view.dart';
+import '../screens/health_records/doctor_health_records_view.dart';
+import '../screens/health_records/health_records_view.dart';
 import '../screens/index.dart';
 import '../screens/login_sms/login_sms_viewmodel.dart';
 import '../screens/my_animals/my_animals_screen.dart';
@@ -73,6 +77,18 @@ class Routes {
     RouteList.doctorsAppointment: (context) {
       return const DoctorAppointmentView();
     },
+    RouteList.healthRecords: (context) {
+      return const HealthRecordsView();
+    },
+    RouteList.addHealthRecords: (context) {
+      return const AddHealthRecordsView();
+    },
+    RouteList.doctorHealthRecords: (context) {
+      return const DoctorHealthRecordsView();
+    },
+    RouteList.addDoctorHealthRecords: (context) {
+      return const AddDoctorHealthRecordsView();
+    },
     RouteList.loginSMS: (context) {
       final userModel = Provider.of<UserModel>(context, listen: false);
       if (kAdvanceConfig.enableNewSMSLogin) {
@@ -104,7 +120,7 @@ class Routes {
   static Route getRouteGenerate(RouteSettings settings) {
     var routingData = settings.name!.getRoutingData;
 
-    printLog('[🧬Builder RouteGenerate] ${routingData.route}');
+    // printLog('[🧬Builder RouteGenerate] ${routingData.route}');
 
     switch (routingData.route) {
       case RouteList.notificationRequest:

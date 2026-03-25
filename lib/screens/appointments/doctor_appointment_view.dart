@@ -174,7 +174,7 @@ class DoctorsAppointmentCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${appointment.pet.name} (${appointment.pet.type})',
+                  '${appointment.pet.name} (${appointment.pet.type} - ${appointment.id})',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

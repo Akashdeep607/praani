@@ -55,41 +55,49 @@ class AnimalService {
     }
   }
 
-  Future<List<AllAnimalModel>> getAllAnimals({
+Future<List<AllAnimalModel>> getAllAnimals({
     required String token,
   }) async {
+    try {
     final uri = Uri.parse(
       '$baseUrl/praani-aadhar/v1/animals?page=1&per_page=10',
     );
 
-    final response = await http.get(
-      uri,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/json',
-      },
-    );
+      final response = await http.get(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      ).timeout(const Duration(seconds: 20));
 
-    if (response.statusCode == 200) {
-      final decoded = jsonDecode(response.body);
-
-      // API returns a plain array
-      if (decoded is List) {
-        final animals = decoded
-            .map<AllAnimalModel>(
-              (e) => AllAnimalModel.fromJson(e as Map<String, dynamic>),
-            )
-            .toList();
-
-        printLog('SUCCESS: Loaded ${animals.length} animals');
-        return animals;
+      if (response.statusCode != 200) {
+        throw Exception(
+          'Failed to fetch animals (${response.statusCode}) ${response.reasonPhrase}',
+        );
       }
 
-      throw Exception('Unexpected response format');
-    } else {
-      throw Exception(
-        'HTTP ${response.statusCode}: ${response.reasonPhrase}',
-      );
+      final decoded = jsonDecode(response.body);
+
+      List<dynamic> dataList;
+
+      if (decoded is List) {
+        dataList = decoded;
+      } else if (decoded is Map && decoded['data'] != null) {
+        dataList = decoded['data'];
+      } else {
+        throw Exception('Invalid API response format');
+      }
+
+      final animals = dataList.map((e) => AllAnimalModel.fromJson(e as Map<String, dynamic>)).toList();
+
+      printLog('SUCCESS: Loaded ${animals.length} animals');
+
+      return animals;
+    } catch (e, stackTrace) {
+      printLog('ERROR: getAllAnimals -> $e');
+      print(stackTrace);
+      rethrow;
     }
   }
 
