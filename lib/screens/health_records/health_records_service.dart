@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:inspireui/utils/logs.dart';
+import 'package:intl/intl.dart';
 
+import '../../models/appointments/doctor_appointment_response.dart';
 import '../../models/my_animals/all_animal_model.dart';
 import 'health_record_response.dart';
 
@@ -62,12 +64,19 @@ class HealthRecordsService {
   Future<bool> submitHealthRecord({
     required String token,
     required int animalId,
+    int? appointmentId,
     required String title,
     required String recordCategory,
     required String description,
+    String isShared = '1',
+    bool isDoctor = false,
     required File healthRecordFile,
   }) async {
-    final uri = Uri.parse('$baseUrl/praani-pet-care/v1/health-records');
+
+    /// Select API based on user type
+    final uri = Uri.parse(
+      isDoctor ? '$baseUrl/praani-pet-care/v1/doctor/health-records' : '$baseUrl/praani-pet-care/v1/health-records',
+    );
 
     try {
       final request = http.MultipartRequest('POST', uri);
@@ -78,10 +87,17 @@ class HealthRecordsService {
       });
 
       /// Text Fields
+
       request.fields['animal_id'] = animalId.toString();
       request.fields['title'] = title;
       request.fields['record_category'] = recordCategory;
       request.fields['description'] = description;
+
+      /// Only doctor can send share flag
+      if (isDoctor) {
+        request.fields['appointment_id'] = appointmentId.toString();
+        request.fields['is_shared'] = isShared;
+      }
 
       /// File Upload
       request.files.add(
@@ -92,7 +108,6 @@ class HealthRecordsService {
       );
 
       final streamedResponse = await request.send();
-
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -134,7 +149,6 @@ class HealthRecordsService {
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-
       final healthResponse = HealthRecordsResponse.fromJson(jsonData);
       return healthResponse.data.records;
     } else {
@@ -142,7 +156,7 @@ class HealthRecordsService {
     }
   }
 
-    Future<void> deleteHealthRecord({
+  Future<void> deleteHealthRecord({
     required String token,
     required int recordId,
   }) async {
@@ -155,6 +169,131 @@ class HealthRecordsService {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to delete record');
+    }
+  }
+
+  static Future<List<HealthRecord>> getDoctorsUploadedRecords({
+    int page = 1,
+    int perPage = 20,
+    required String token,
+  }) async {
+    try {
+      final url = Uri.parse(
+        '$baseUrl/praani-pet-care/v1/doctor/health-records?page=$page&per_page=$perPage',
+      );
+
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        final healthResponse = HealthRecordsResponse.fromJson(jsonData);
+        return healthResponse.data.records;
+      } else {
+        throw Exception(
+          'Failed to load health records. Status code: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      throw Exception('Error fetching health records: $e');
+    }
+  }
+
+  Future<List<DoctorAppointment>> getDoctorsCompletedAppointment({
+    required String token,
+  }) async {
+    try {
+      final uri = Uri.parse(
+        '$baseUrl/praani-pet-care/v1/doctor/appointments',
+      );
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body);
+
+        if (decoded is Map<String, dynamic> && decoded['data'] is List) {
+          final List appointmentsJson = decoded['data'];
+
+          final appointments = appointmentsJson
+              .map((e) => DoctorAppointment.fromJson(e as Map<String, dynamic>))
+              .where((appointment) => appointment.status.toLowerCase() == 'completed')
+              .toList();
+
+          printLog(
+            'SUCCESS: Loaded ${appointments.length} completed appointments',
+          );
+
+          return appointments;
+        } else {
+          throw Exception('Unexpected response format for appointments');
+        }
+      } else {
+        throw Exception(
+          'HTTP ${response.statusCode}: ${response.reasonPhrase}',
+        );
+      }
+    } catch (e) {
+      printLog('ERROR fetching completed appointments: $e');
+      rethrow;
+    }
+  }
+
+  Future<List<DoctorAppointment>> getCompletedAppointmentsByDate({
+    required String token,
+    required String date,
+  }) async {
+    try {
+      final uri = Uri.parse(
+        '$baseUrl/praani-pet-care/v1/doctor/appointments?date=$date',
+      );
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body);
+
+        if (decoded is Map<String, dynamic> && decoded['data'] is List) {
+          final List appointmentsJson = decoded['data'];
+
+          final appointments = appointmentsJson
+              .map((e) => DoctorAppointment.fromJson(e as Map<String, dynamic>))
+              .where((appointment) => appointment.status.toLowerCase() == 'completed')
+              .toList();
+
+          printLog(
+            'SUCCESS: Loaded ${appointments.length} completed appointments',
+          );
+
+          return appointments;
+        } else {
+          throw Exception('Unexpected response format for appointments');
+        }
+      } else {
+        throw Exception(
+          'HTTP ${response.statusCode}: ${response.reasonPhrase}',
+        );
+      }
+    } catch (e) {
+      printLog('ERROR fetching completed appointments: $e');
+      rethrow;
     }
   }
 }

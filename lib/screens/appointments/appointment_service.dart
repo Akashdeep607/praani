@@ -37,7 +37,6 @@ class AppointmentService {
   }
 
   Future<List<PetAppointmentModel>> getAllAppointments({required String token}) async {
-    print('FETCHING ALL');
     final uri = Uri.parse(
       '$baseUrl/praani-pet-care/v1/appointments',
     );
@@ -287,7 +286,6 @@ class AppointmentService {
   }
 
   Future<List<DoctorAppointment>> getDoctorsAppointment({required String token}) async {
-    print('FETCHING');
     final uri = Uri.parse(
       '$baseUrl/praani-pet-care/v1/doctor/appointments',
     );

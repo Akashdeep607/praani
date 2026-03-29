@@ -101,16 +101,19 @@ class Customer {
 class Pet {
   final String name;
   final String type;
+  final int id;
 
   Pet({
     required this.name,
     required this.type,
+    required this.id,
   });
 
   factory Pet.fromJson(Map<String, dynamic> json) {
     return Pet(
       name: json['name'] ?? '',
       type: json['type'] ?? '',
+      id: json['id'] ?? '',
     );
   }
 
@@ -118,6 +121,7 @@ class Pet {
     return {
       'name': name,
       'type': type,
+      'id': id,
     };
   }
 }

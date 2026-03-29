@@ -3,6 +3,7 @@ import '../../data/boxes.dart';
 
 import '../../models/entities/user.dart';
 import '../../models/my_animals/all_animal_model.dart';
+import 'add_doctor_health_records_view.dart';
 import 'health_record_response.dart';
 import 'health_records_service.dart';
 import 'health_records_view.dart';
@@ -16,80 +17,34 @@ class DoctorHealthRecordsView extends StatefulWidget {
 
 class _DoctorHealthRecordsViewState extends State<DoctorHealthRecordsView> {
   late String cookieToken;
-  bool isCustomer = false;
-  List<AllAnimalModel> animals = [];
   bool isLoading = true;
   List<HealthRecord> records = [];
-  AllAnimalModel? selectedAnimal;
   late User user;
   @override
   void initState() {
     super.initState();
 
     user = UserBox().userInfo ?? User();
-    isCustomer = user.role == 'customer';
     cookieToken = user.cookie ?? '';
-    loadAnimals();
+    _fetchDoctorsUploadedRecords();
   }
 
-  Future<void> loadAnimals() async {
-    setState(() {
-      isLoading = true;
-    });
-
+  Future<void> _fetchDoctorsUploadedRecords() async {
     try {
-      final result = await HealthRecordsService().getApprovedAnimals(token: cookieToken);
-
-      animals = result;
-
-      if (animals.isNotEmpty) {
-        selectedAnimal = animals.first;
-
-        /// Fetch records for first animal
-        await _fetchHealthRecords(selectedAnimal?.id ?? 0);
-      } else {
-        selectedAnimal = null;
-        records = [];
-      }
-    } catch (e) {
-      debugPrint('Load animals error: $e');
-    }
-
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  Future<void> _fetchHealthRecords(int id, {bool fromDropdown = false}) async {
-    if (fromDropdown) {
-      setState(() {
-        isLoading = true;
-      });
-    }
-    try {
-      final data = await HealthRecordsService.fetchHealthRecords(
-        id: id,
+      final data = await HealthRecordsService.getDoctorsUploadedRecords(
         token: cookieToken,
       );
 
       if (mounted) {
         setState(() {
           records = data;
-        });
-      }
-      if (fromDropdown) {
-        setState(() {
           isLoading = false;
         });
       }
     } catch (e) {
-      if (fromDropdown) {
-        setState(() {
-          isLoading = false;
-        });
-      }
+      setState(() {
+        isLoading = false;
+      });
       debugPrint('Health records error: $e');
     }
   }
@@ -98,13 +53,13 @@ class _DoctorHealthRecordsViewState extends State<DoctorHealthRecordsView> {
     final result = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
-        builder: (_) => const HealthRecordsView(),
+        builder: (_) => const AddDoctorHealthRecordsView(),
       ),
     );
 
     if (result == true) {
       setState(() async {
-        await _fetchHealthRecords(selectedAnimal?.id ?? 0);
+        await _fetchDoctorsUploadedRecords();
       }); // refresh list
     }
   }
@@ -157,11 +112,21 @@ class _DoctorHealthRecordsViewState extends State<DoctorHealthRecordsView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    /// Pet Name
+                    Text(
+                      record.animalName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Divider(),
                     /// Title
                     Text(
                       record.title,
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -198,7 +163,7 @@ class _DoctorHealthRecordsViewState extends State<DoctorHealthRecordsView> {
 
                     /// Uploader
                     Text(
-                      'Uploaded by ${user.fullName == record.uploaderName ? "You" : record.uploaderName}',
+                      'Uploaded by ${record.uploaderRole == "doctor" ? "You" : record.uploaderName}',
                       style: const TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
@@ -224,7 +189,6 @@ class _DoctorHealthRecordsViewState extends State<DoctorHealthRecordsView> {
                 icon: const Icon(Icons.delete),
                 onPressed: () {
                   _confirmDelete(record);
-                
                 },
                 color: Colors.red,
               )
@@ -275,7 +239,7 @@ class _DoctorHealthRecordsViewState extends State<DoctorHealthRecordsView> {
                 Navigator.of(context, rootNavigator: true).pop();
 
                 // Refresh list
-               await _fetchHealthRecords(selectedAnimal?.id ?? 0);
+                await _fetchDoctorsUploadedRecords();
               } catch (e) {
                 if (!mounted) return;
 
@@ -313,48 +277,18 @@ class _DoctorHealthRecordsViewState extends State<DoctorHealthRecordsView> {
             ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : animals.isEmpty
+          : records.isEmpty
               ? const Center(child: Text('No Health Records Found'))
               : Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Column(
-                    children: [
-                      /// Animal Dropdown
-                      DropdownButtonFormField<AllAnimalModel>(
-                        decoration: const InputDecoration(
-                          labelText: 'Select Animal',
-                          border: OutlineInputBorder(),
-                        ),
-                        items: animals.map((animal) {
-                          return DropdownMenuItem(
-                            value: animal,
-                            child: Text(animal.animalName),
-                          );
-                        }).toList(),
-                        value: animals.isNotEmpty ? selectedAnimal : null,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedAnimal = value;
-                            _fetchHealthRecords(selectedAnimal?.id ?? 0, fromDropdown: true);
-                          });
-                        },
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      /// Health Records List
-                      records.isEmpty
-                          ? const Center(child: Text('No Health Records Found'))
-                          : Expanded(
-                              child: ListView.builder(
-                                itemCount: records.length,
-                                itemBuilder: (context, index) {
-                                  final record = records[index];
-                                  return _buildRecordCard(record);
-                                },
-                              ),
-                            ),
-                    ],
+                  child: Expanded(
+                    child: ListView.builder(
+                      itemCount: records.length,
+                      itemBuilder: (context, index) {
+                        final record = records[index];
+                        return _buildRecordCard(record);
+                      },
+                    ),
                   ),
                 ),
     );

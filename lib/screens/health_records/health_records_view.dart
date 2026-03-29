@@ -16,7 +16,6 @@ class HealthRecordsView extends StatefulWidget {
 
 class _HealthRecordsViewState extends State<HealthRecordsView> {
   late String cookieToken;
-  bool isCustomer = false;
   List<AllAnimalModel> animals = [];
   bool isLoading = true;
   List<HealthRecord> records = [];
@@ -27,7 +26,6 @@ class _HealthRecordsViewState extends State<HealthRecordsView> {
     super.initState();
 
     user = UserBox().userInfo ?? User();
-    isCustomer = user.role == 'customer';
     cookieToken = user.cookie ?? '';
     loadAnimals();
   }

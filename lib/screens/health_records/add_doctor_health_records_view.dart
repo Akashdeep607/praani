@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../data/boxes.dart';
+import '../../models/appointments/doctor_appointment_response.dart';
 import '../../models/my_animals/all_animal_model.dart';
 import 'health_records_service.dart';
 
@@ -17,9 +19,12 @@ class AddDoctorHealthRecordsView extends StatefulWidget {
 class _AddDoctorHealthRecordsViewState extends State<AddDoctorHealthRecordsView> {
   bool isCustomer = false;
   late String cookieToken;
-
   List<AllAnimalModel> animals = [];
   AllAnimalModel? selectedAnimal;
+TextEditingController petController = TextEditingController();
+
+  List<DoctorAppointment> appointments = [];
+  DoctorAppointment? selectedAppointment;
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -38,17 +43,18 @@ class _AddDoctorHealthRecordsViewState extends State<AddDoctorHealthRecordsView>
     isCustomer = user?.role == 'customer';
     cookieToken = user?.cookie ?? '';
 
-    loadAnimals();
+    loadCompletedAppointments();
   }
 
-  Future<void> loadAnimals() async {
-    final result = await HealthRecordsService().getApprovedAnimals(token: cookieToken);
+  Future<void> loadCompletedAppointments() async {
+    final result = await HealthRecordsService().getDoctorsCompletedAppointment(token: cookieToken);
 
     setState(() {
-      animals = result;
+      appointments = result;
       isLoading = false;
     });
   }
+
 
   /// File Picker
   Future<void> pickFile() async {
@@ -62,8 +68,7 @@ class _AddDoctorHealthRecordsViewState extends State<AddDoctorHealthRecordsView>
   }
 
   Future<void> submitHealthRecord() async {
-    _showLoading();
-    if (selectedAnimal == null) {
+    if (selectedAppointment == null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Select animal')));
       return;
     }
@@ -72,14 +77,17 @@ class _AddDoctorHealthRecordsViewState extends State<AddDoctorHealthRecordsView>
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Upload file')));
       return;
     }
+    _showLoading();
 
     final success = await HealthRecordsService().submitHealthRecord(
       token: cookieToken,
-      animalId: selectedAnimal!.id,
+        animalId: selectedAppointment!.pet.id,
+        appointmentId: selectedAppointment?.id,
       title: titleController.text,
       recordCategory: recordCategory,
       description: descriptionController.text,
       healthRecordFile: selectedFile!,
+        isDoctor: true
     );
 
     if (mounted && success == true) {
@@ -103,7 +111,10 @@ class _AddDoctorHealthRecordsViewState extends State<AddDoctorHealthRecordsView>
       builder: (_) => const Center(child: CircularProgressIndicator()),
     );
   }
-
+  String formatDate(String date) {
+    final parsedDate = DateTime.parse(date);
+    return DateFormat('dd-MM-yyyy').format(parsedDate);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,23 +130,46 @@ class _AddDoctorHealthRecordsViewState extends State<AddDoctorHealthRecordsView>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     /// Animal Dropdown
-                    DropdownButtonFormField<AllAnimalModel>(
+                    DropdownButtonFormField<DoctorAppointment>(
                       decoration: const InputDecoration(
-                        labelText: 'Select Animal',
+                        labelText: 'Select Appointment',
                         border: OutlineInputBorder(),
                       ),
-                      items: animals.map((animal) {
-                        return DropdownMenuItem(
-                          value: animal,
-                          child: Text(animal.animalName),
+                      items: appointments.map((appointment) {
+                        return DropdownMenuItem<DoctorAppointment>(
+                          value: appointment,
+                          child: Text(
+                            'Appointment No. ${appointment.id} - ${formatDate(appointment.date)}',
+                          ),
                         );
                       }).toList(),
-                      value: selectedAnimal,
+                      value: selectedAppointment,
                       onChanged: (value) {
                         setState(() {
-                          selectedAnimal = value;
+                          selectedAppointment = value;
+
+                          if (value != null) {
+                            petController.text = '${value.pet.name} (${value.pet.type})';
+                          } else {
+                            petController.clear();
+                          }
                         });
                       },
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    /// Pet Field
+                    TextFormField(
+                      controller: petController,
+                      enabled: false,
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: const InputDecoration(
+                        labelText: 'Pet',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
 
                     const SizedBox(height: 20),

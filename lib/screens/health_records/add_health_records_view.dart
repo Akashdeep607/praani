@@ -15,7 +15,6 @@ class AddHealthRecordsView extends StatefulWidget {
 }
 
 class _AddHealthRecordsViewState extends State<AddHealthRecordsView> {
-  bool isCustomer = false;
   late String cookieToken;
 
   List<AllAnimalModel> animals = [];
@@ -35,7 +34,6 @@ class _AddHealthRecordsViewState extends State<AddHealthRecordsView> {
     super.initState();
 
     final user = UserBox().userInfo;
-    isCustomer = user?.role == 'customer';
     cookieToken = user?.cookie ?? '';
 
     loadAnimals();
@@ -62,7 +60,6 @@ class _AddHealthRecordsViewState extends State<AddHealthRecordsView> {
   }
 
   Future<void> submitHealthRecord() async {
-    _showLoading();
     if (selectedAnimal == null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Select animal')));
       return;
@@ -72,6 +69,7 @@ class _AddHealthRecordsViewState extends State<AddHealthRecordsView> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Upload file')));
       return;
     }
+    _showLoading();
 
     final success = await HealthRecordsService().submitHealthRecord(
       token: cookieToken,
