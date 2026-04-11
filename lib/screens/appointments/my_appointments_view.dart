@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/boxes.dart';
 import '../../models/appointments/pet_appointment_response.dart';
+import '../users/login/login_screen.dart';
 import 'add_appointment_view.dart';
 import 'appointment_service.dart';
 
@@ -294,9 +295,30 @@ class _MyAppointmentsViewState extends State<MyAppointmentsView> {
           }
 
           if (snapshot.hasError) {
+            if (cookieToken.isEmpty) {
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                spacing: 5,
+                children: [
+                  const Text('Please login to continue'),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push<bool>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LoginScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text('Login')),
+                ],
+              ));
+            }
             return Center(
               child: Text(
-                'Error: ${snapshot.error}',
+                snapshot.error.toString(),
                 style: const TextStyle(color: Colors.red),
               ),
             );

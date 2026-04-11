@@ -11,7 +11,7 @@ import '../../models/appointments/services_response_model.dart';
 import '../../models/appointments/working_hours_model.dart';
 
 class AppointmentService {
-  static const String baseUrl = 'https://agratix.com/psdemo/wp-json';
+  static const String baseUrl = 'https://praanisakha.com/wp-json';
 
   Future<bool> createAppointment({
     required String token,

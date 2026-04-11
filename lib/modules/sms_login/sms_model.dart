@@ -104,7 +104,8 @@ class SMSModel extends ChangeNotifier {
     try {
       _updateState(SMSModelState.loading);
       final url = Uri.parse(
-        'https://agratix.com/psdemo/wp-json/ploginotp/v1/send-otp',
+        'https://praanisakha.com/wp-json/ploginotp/v1/send-otp',
+        // 'https://agratix.com/psdemo/wp-json/ploginotp/v1/send-otp',
       );
 
       final response = await http.post(
@@ -213,7 +214,7 @@ class SMSModel extends ChangeNotifier {
       _updateState(SMSModelState.loading);
 
       final url = Uri.parse(
-        'https://agratix.com/psdemo/wp-json/ploginotp/v1/verify-otp',
+        'https://praanisakha.com/wp-json/ploginotp/v1/verify-otp',
       );
 
       final response = await http.post(

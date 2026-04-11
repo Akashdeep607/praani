@@ -11,7 +11,7 @@ import '../../models/my_animals/animal_type_response.dart';
 import '../../models/my_animals/my_animal_model.dart';
 
 class AnimalService {
-  static const String baseUrl = 'https://agratix.com/psdemo/wp-json';
+  static const String baseUrl = 'https://praanisakha.com/wp-json';
 
   Future<bool> addAnimal({
     required String token,
@@ -104,7 +104,7 @@ Future<List<AllAnimalModel>> getAllAnimals({
   Future<Map<String, List<String>>> fetchAnimalBloodGroups() async {
     final response = await http.get(
       Uri.parse(
-        'https://agratix.com/psdemo/wp-json/praanisakha/v1/animal-types',
+        'https://praanisakha.com/wp-json/praanisakha/v1/animal-types',
       ),
     );
 

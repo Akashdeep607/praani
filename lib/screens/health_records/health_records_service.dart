@@ -10,7 +10,7 @@ import '../../models/my_animals/all_animal_model.dart';
 import 'health_record_response.dart';
 
 class HealthRecordsService {
-  static const String baseUrl = 'https://agratix.com/psdemo/wp-json';
+  static const String baseUrl = 'https://praanisakha.com/wp-json';
   Future<List<AllAnimalModel>> getApprovedAnimals({
     required String token,
   }) async {

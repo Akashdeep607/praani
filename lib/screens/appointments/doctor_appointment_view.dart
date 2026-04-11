@@ -85,9 +85,9 @@ class _DoctorAppointmentViewState extends State<DoctorAppointmentView> {
           }
 
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text(
-                'Failed to load appointments\n${snapshot.error}',
+                'No appointments found',
                 textAlign: TextAlign.center,
               ),
             );
