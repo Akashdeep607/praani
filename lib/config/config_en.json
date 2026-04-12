@@ -1,0 +1,503 @@
+{
+  "HorizonLayout": [
+    {
+      "layout": "logo",
+      "showMenu": true,
+      "showSearch": true,
+      "showLogo": true,
+      "enableBackground": true
+    },
+    {
+      "layout": "category",
+      "type": "icon",
+      "useFor": "mobile",
+      "wrap": false,
+      "size": 1.0,
+      "radius": 50.0,
+      "enableBackground": true,
+      "items": [
+        {
+          "category": 93,
+          "label": "Cat",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/cat.png",
+          "colors": [
+            "#3CC2BF",
+            "#3CC2BF"
+          ],
+          "originalColor": false
+        },
+        {
+          "category": 95,
+          "label": "Dog",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/dog.png",
+          "colors": [
+            "#3E6AB5",
+            "#3E6AB5"
+          ]
+        },
+        {
+          "category": 101,
+          "label": "Cow",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/cow.png",
+          "colors": [
+            "#53688A",
+            "#53688A"
+          ]
+        },
+        {
+          "category": 106,
+          "label": "Small Pets",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/small_pets.png",
+          "colors": [
+            "#53A2CC",
+            "#53A2CC"
+          ]
+        },
+        {
+          "category": 105,
+          "label": "Non Domestic",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/nondomesticated.png",
+          "colors": [
+            "#43506A",
+            "#43506A"
+          ]
+        }
+      ]
+    },
+    {
+      "layout": "bannerImage",
+      "isSlider": true,
+      "autoPlay": false,
+      "showNumber": false,
+      "design": "default",
+      "showBackGround": true,
+      "radius": 2.0,
+      "enableBackground": true,
+      "items": [
+        {
+          "category": 96,
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/mobile_banner_1.jpg",
+          "padding": 15.0
+        },
+        {
+          "category": 94,
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/mobile_banner_2.jpg",
+          "padding": 15.0
+        },
+        {
+          "product": 1223,
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/mobile_banner_3.png",
+          "padding": 15.0
+        }
+      ],
+      "itemsWeb": [
+        {
+          "category": 93,
+          "image": "https://cln.sh/41hyDrzG+",
+          "padding": 15.0
+        },
+        {
+          "category": 95,
+          "image": "https://cln.sh/5nl2ZsKG+",
+          "padding": 15.0
+        },
+        {
+          "product": 1226,
+          "image": "https://cln.sh/q24Xpr1c+",
+          "padding": 15.0
+        }
+      ]
+    },
+    {
+      "layout": "category",
+      "type": "twoRow",
+      "wrap": true,
+      "useFor": "web",
+      "showShortDescription": true,
+      "size": 1.0,
+      "radius": 150.0,
+      "title": "Shop by category",
+      "spacing": 12.0,
+      "items": [
+        {
+          "category": "93",
+          "image":"https://praanisakha.com/wp-content/uploads/2026/04/category_cat.png",
+          "showText": true,
+          "originalColor": true,
+          "keepDefaultTitle": false,
+          "showDescription": false,
+          "productType": false,
+          "title": "Cat",
+          "onSale": false,
+          "isFeatured": false
+        },
+        {
+          "category": "95",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/category_dog.png",
+          "showText": true,
+          "originalColor": true,
+          "keepDefaultTitle": false,
+          "showDescription": false,
+          "productType": false,
+          "title": "Dog",
+          "onSale": false,
+          "isFeatured": false
+        },
+        {
+          "category": "101",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/category_cow.png",
+          "showText": true,
+          "originalColor": true,
+          "keepDefaultTitle": false,
+          "showDescription": false,
+          "productType": false,
+          "title": "Cow",
+          "onSale": false,
+          "isFeatured": false
+        },
+        {
+          "category": "105",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/category_nondomesticated.png",
+          "showText": true,
+          "originalColor": true,
+          "keepDefaultTitle": false,
+          "showDescription": false,
+          "productType": false,
+          "title": "Non Domestic",
+          "onSale": false,
+          "isFeatured": false
+        },
+        {
+          "category": "106",
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/category_smallpets.png",
+          "showText": true,
+          "originalColor": true,
+          "keepDefaultTitle": false,
+          "showDescription": false,
+          "productType": false,
+          "title": "Small Pets",
+          "onSale": false,
+          "isFeatured": false
+        }
+
+  
+      ],
+      "line": false,
+      "marginLeft": 16.0,
+      "marginRight": 16.0,
+      "marginTop": 10.0,
+      "marginBottom": 10.0,
+      "paddingX": 10.0,
+      "paddingY": 10.0,
+      "marginX": 0.0,
+      "marginY": 0.0,
+      "hideTitle": false,
+      "noBackground": false,
+      "imageBorderWidth": 0.0,
+      "imageBorderColor": "ffe61a00",
+      "imageBorderStyle": "dot",
+      "imageSpacing": 0.0,
+      "border": 0.6,
+      "enableBorder": false,
+      "textAlignment": "topCenter",
+      "imageBoxFit": "fitWidth",
+      "columns": 4,
+      "itemSize": {
+        "width": 270.0,
+        "height": 118.0
+      }
+    },
+    {
+      "key": "v14g5clzc34tf8",
+      "name": "On Sale Today ⚡️",
+      "layout": "saleOff",
+      "isSnapping": true,
+      "rows": 1,
+      "columns": 0,
+      "imageBoxfit": "cover",
+      "imageRatio": 1.2,
+      "hMargin": 9.0,
+      "vMargin": 30.0,
+      "hPadding": 8.0,
+      "vPadding": 6.0,
+      "pos": 400,
+      "showStockStatus": false,
+      "enableRating": true,
+      "hideTitle": false,
+      "hideStore": false,
+      "onSale": true,
+      "hidePrice": false,
+      "featured": false,
+      "showHeart": true,
+      "showCartButton": false,
+      "cartIconRadius": 9.0,
+      "showQuantity": false,
+      "showCartIconColor": false,
+      "showCartIcon": false,
+      "enableBottomAddToCart": false,
+      "cardDesign": "card",
+      "borderRadius": 12.0,
+      "backgroundRadius": 0.0,
+      "showCartButtonWithQuantity": false,
+      "category": null,
+      "tag": null,
+      "showCountDown": true,
+      "backgroundColor": "ffF1F8FA",
+      "backgroundImage": "https://praanisakha.com/wp-content/uploads/2026/04/discounted_sale.jpg",
+      "spaceWidth": 130.0,
+      "backgroundHeight": 288.0,
+      "backgroundBoxFit": "contain",
+      "parallax": true,
+      "parallaxImageRatio": 1.2,
+      "boxShadow": {
+        "blurRadius": 14.0,
+        "colorOpacity": 0.1,
+        "spreadRadius": 10.0,
+        "x": 0.0,
+        "y": 6.0
+      },
+      "hideEmptyProductLayout": false,
+      "enableBackground": true
+    },
+    {
+      "name": "Pet Collections",
+      "image": "",
+      "layout": "twoColumn",
+      "category": 93,
+      "enableBackground": true
+    },
+    {
+      "layout": "bannerImage",
+      "design": "static",
+      "useFor": "mobile",
+      "fit": "fitWidth",
+      "marginLeft": 0.0,
+      "enableBackground": true,
+      "items": [
+        {
+          "image": "https://praanisakha.com/wp-content/uploads/2026/04/banner.png",
+          "coupon": "blackf",
+          "padding": 15.0,
+          "radius": 9.0
+        }
+      ],
+      "marginBottom": 0.0,
+      "height": 0.15,
+      "marginRight": 0.0,
+      "marginTop": 20.0
+    },
+    {
+      "name": "Recent View",
+      "layout": "recentView"
+    },
+    {
+      "name": "Our Blog Posts",
+      "layout": "blog"
+    },
+    {
+      "name": "New Collections",
+      "layout": "staggered",
+      "limit": 20,
+      "category": 95
+    },
+    {
+      "layout": "bannerGrid",
+      "startImage": "https://cln.sh/v88KWKn1+",
+      "endImage": "https://cln.sh/msXl6bll+",
+      "centerImage": "https://cln.sh/K84GT5PB+",
+      "centerTopImage": "https://cln.sh/SSXPYGCB+",
+      "centerBottomImage": "https://cln.sh/MZF24H9H+",
+      "borderRadius": 8.0,
+      "blog": 8743
+    }
+  ],
+  "Setting": {
+    "MainColor": "#3FC1BE",
+    "FontFamily": "Inter",
+    "FontHeader": "Inter",
+    "ProductListLayout": "list",
+    "StickyHeader": false,
+    "ShowChat": true,
+    "useMaterial3": false,
+    "AgeRestriction": {
+      "enable": false,
+      "imageUrl": "",
+      "backgroundImageUrl": "",
+      "title": "Welcome to our shop\nYou must be 21 or older to enter",
+      "deniedMessage": "You are not of legal age to use this application",
+      "hintMessage": "What is your year of birth?",
+      "minimumAge": 21,
+      "useLogo": true,
+      "alwaysShowUponOpen": true
+    },
+    "AboutUS": "https://praanisakha.com/about-us.html",
+    "Privacy": "https://praanisakha.com/privacy-policy.html",
+
+    "SmartEngagementBanner": {
+      "popup": {
+        "enable": false,
+        "data": {
+          "layout": "bannerImage",
+          "design": "static",
+          "fit": "fitHeight",
+          "marginLeft": null,
+          "items": [
+            {
+              "image": "https://i.imgur.com/ZL1LO75.png",
+              "showSubcategory": false,
+              "bannerWithProduct": false,
+              "defaultShowProduct": false,
+              "products": [],
+              "category": "93",
+              "padding": 0.0
+            }
+          ],
+          "marginBottom": 10.0,
+          "height": 0.45,
+          "marginRight": null,
+          "marginTop": 10.0,
+          "enableParallax": false,
+          "parallaxImageRatio": 1.2,
+          "isHorizontal": false,
+          "parallax": false,
+          "key": "p2oq4zc4hg"
+        },
+        "alwaysShowUponOpen": true,
+        "closePosition": "topRight",
+        "updatedTime": 1661314494281
+      },
+      "flexible": {
+        "enable": false,
+        "data": {
+          "alignment": "topCenter",
+          "marginTop": 0.0,
+          "marginBottom": 0.0,
+          "items": [
+            {
+              "image": "https://assets9.lottiefiles.com/private_files/lf30_a4mKwA.json",
+              "width": 100.0,
+              "height": 80.0,
+              "borderRadius": 2.0,
+              "marginLeft": 0.0,
+              "marginRight": 0.0,
+              "textFontSize": 14.0,
+              "useMaxWidth": true,
+              "navigator": {
+                "showSubcategory": false,
+                "coupon": "blackf"
+              }
+            }
+          ],
+          "layout": "button"
+        },
+        "canDrag": true,
+        "canClose": true,
+        "width": 100.0,
+        "height": 100.0
+      },
+      "sticky": {
+        "enable": false,
+        "data": {
+          "layout": "bannerImage",
+          "design": "static",
+          "fit": "fitWidth",
+          "marginLeft": 10.0,
+          "items": [
+            {
+              "image": "https://i.imgur.com/LUaEM3v.jpeg",
+              "showSubcategory": false,
+              "bannerWithProduct": false,
+              "defaultShowProduct": false,
+              "products": [],
+              "coupon": "halfprice",
+              "padding": 0.0,
+              "radius": 9.0
+            }
+          ],
+          "marginBottom": 10.0,
+          "marginRight": 10.0,
+          "marginTop": 10.0,
+          "height": 0.2,
+          "enableParallax": false,
+          "parallaxImageRatio": 1.2,
+          "isHorizontal": false,
+          "parallax": false,
+          "key": "ga8oe39k5t"
+        }
+      }
+    }
+  },
+  "TabBar": [
+    {
+      "layout": "home",
+      "icon": "assets/icons/tabs/icon-home.png"
+    },
+    {
+      "layout": "category",
+      "categoryLayout": "card",
+      "icon": "assets/icons/tabs/icon-category.png"
+    },
+    {
+      "layout": "cart",
+      "icon": "assets/icons/tabs/icon-cart2.png"
+    },
+    {
+      "layout": "profile",
+      "icon": "assets/icons/tabs/icon-user.png",
+      "showChat": true,
+      "showBackground": true,
+      "styleItem": "listTile",
+      "settingStyle": "normal"
+    }
+  ],
+  "searchSuggestion": [
+    "Here are some suggestions:",
+    "Dog Food",
+    "Cat Food",
+    "Cow Food",
+    "Small Pets Food",
+    "Sale"
+  ],
+  "PrivacyPoliciesPageUrlOrId": "https://praanisakha.com/privacy-policy.html",
+  "MetaSeo": {
+    "app": {
+      "excludes": [
+        "checkout"
+      ],
+      "config": {
+        "author": "InspireUI",
+        "description": "All-in-one mobile solutions and services for Startups, Developers, Entrepreneurs & more…",
+        "keywords": [
+          "Flutter",
+          "Dart",
+          "SEO",
+          "Meta",
+          "Web",
+          "FluxStore",
+          "FluxBuilder"
+        ]
+      }
+    },
+    "routes": [
+      {
+        "route": "dashboard",
+        "config": {
+          "author": "InspireUI",
+          "description": "All-in-one mobile solutions and services for Startups, Developers, Entrepreneurs & more…",
+          "keywords": [
+            "Flutter",
+            "Dart",
+            "SEO",
+            "Meta",
+            "Web",
+            "FluxStore"
+          ]
+        }
+      }
+    ]
+  },
+  "overrideTranslation": {
+    "@@locale": "en",
+    "copyright": "Copyright © 2025 Praanisakha | Powered by Agratix"
+  }
+}
