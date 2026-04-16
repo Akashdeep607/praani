@@ -85,6 +85,21 @@ class _AddAnimalScreenState extends State<AddAnimalScreen> with WidgetsBindingOb
       isLoading = false;
     });
   }
+
+  void getState(BuildContext context, String pinCode) async {
+    try {
+      stateCtrl.text = await AnimalService().fetchStateName(pinCode) ?? '';
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('State: ${stateCtrl.text}')),
+      // );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
+  }
+
   // ---------------- PERMISSIONS ----------------
 
   Future<bool> _ensurePermission(ImageSource source) async {
@@ -308,8 +323,12 @@ class _AddAnimalScreenState extends State<AddAnimalScreen> with WidgetsBindingOb
               const SizedBox(height: 24),
               _sectionTitle('Location Information'),
               _textArea('Address', addressCtrl),
-              _textField('Pincode *', pincodeCtrl, required: true),
-              _textField('State', stateCtrl),
+              _textField('Pincode *', pincodeCtrl, required: true, isPinCode: true, onChanged: (value) {
+                if (value.length == 6) {
+                  getState(context, value);
+                }
+              }),
+              _textField('State', stateCtrl, readOnly: true),
               const SizedBox(height: 32),
               SizedBox(
                 width: double.infinity,
@@ -445,12 +464,22 @@ class _AddAnimalScreenState extends State<AddAnimalScreen> with WidgetsBindingOb
         child: Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       );
 
-  Widget _textField(String label, TextEditingController controller, {bool required = false}) {
+  Widget _textField(
+    String label,
+    TextEditingController controller, {
+    bool required = false,
+    bool readOnly = false,
+    bool isPinCode = false,
+    Function(String)? onChanged,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
         controller: controller,
+        readOnly: readOnly,
+        onChanged: onChanged,
         decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+        maxLength: isPinCode ? 6 : null,
         validator: required ? (v) => v == null || v.isEmpty ? 'Required field' : null : null,
       ),
     );

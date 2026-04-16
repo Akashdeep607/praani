@@ -55,13 +55,13 @@ class AnimalService {
     }
   }
 
-Future<List<AllAnimalModel>> getAllAnimals({
+  Future<List<AllAnimalModel>> getAllAnimals({
     required String token,
   }) async {
     try {
-    final uri = Uri.parse(
-      '$baseUrl/praani-aadhar/v1/animals?page=1&per_page=10',
-    );
+      final uri = Uri.parse(
+        '$baseUrl/praani-aadhar/v1/animals?page=1&per_page=10',
+      );
 
       final response = await http.get(
         uri,
@@ -156,11 +156,11 @@ Future<List<AllAnimalModel>> getAllAnimals({
       throw Exception('Failed to delete animal');
     }
   }
-
-  Future<AnimalPhotoUploadResponse> uploadAnimalImage({
+Future<AnimalPhotoUploadResponse> uploadAnimalImage({
     required String token,
     required File imageFile,
   }) async {
+    try {
     final uri = Uri.parse('$baseUrl/praani-aadhar/v1/upload-photo');
 
     // Generate random string
@@ -170,7 +170,7 @@ Future<List<AllAnimalModel>> getAllAnimals({
       return List.generate(length, (_) => chars[rand.nextInt(chars.length)]).join();
     }
 
-    // Generate filename: Photo_<random>_<yyyyMMddHHmmss>.ext
+      // Generate filename
     final extension = imageFile.path.split('.').last;
     final timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
     final filename = 'Photo_${randomString(10)}_$timestamp.$extension';
@@ -181,25 +181,50 @@ Future<List<AllAnimalModel>> getAllAnimals({
         await http.MultipartFile.fromPath(
           'photo',
           imageFile.path,
-          filename: filename, // <-- use randomized filename
+            filename: filename,
         ),
       );
 
     final streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
 
-    if (response.statusCode != 200) {
-      throw Exception('Photo upload failed (${response.statusCode})');
-    }
+      // Status check
+      //   if (response.statusCode != 200 || response.statusCode != 201) {
+      //     throw HttpException(
+      //       'Photo upload failed with status: ${response.statusCode}',
+      //     );
+      // }
 
     final decoded = jsonDecode(response.body);
 
+      // Business logic validation
     if (decoded['success'] != true || decoded['attachment_id'] == null) {
-      throw Exception(decoded['message'] ?? 'Photo upload failed');
+        throw FormatException(
+          decoded['message'] ?? 'Invalid response format',
+        );
     }
 
     return AnimalPhotoUploadResponse.fromJson(decoded);
-  }
+
+    } on SocketException catch (e) {
+      // Network issue
+      throw Exception('No Internet connection: ${e.message}');
+    } on HttpException catch (e) {
+      // Server returned error status
+      throw Exception(e.message);
+    } on FormatException catch (e) {
+      // Invalid JSON / API contract issue
+      throw Exception('Response parsing error: ${e.message}');
+    } catch (e, stackTrace) {
+      // Unknown error (log this in production)
+      // ignore: avoid_print
+      print('Upload Error: $e');
+      // ignore: avoid_print
+      print(stackTrace);
+
+      throw Exception('Something went wrong while uploading photo');
+    }
+}
 
   Future<File> downloadPdfFromUrl({
     required String pdfUrl,
@@ -256,5 +281,23 @@ Future<List<AllAnimalModel>> getAllAnimals({
       pdfUrl: meta.pdfUrl,
       fileName: meta.aadharId.replaceAll(' ', '_'),
     );
+  }
+
+  Future<String?> fetchStateName(String pincode) async {
+    final url = Uri.parse('https://praanisakha.com/wp-json/praani-aadhar/v1/pincode/$pincode');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        // Extract only state_name
+        return data['state_name'];
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch state name : $e');
+    }
+    return null;
   }
 }
