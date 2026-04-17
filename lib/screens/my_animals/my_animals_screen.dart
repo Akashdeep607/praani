@@ -231,6 +231,7 @@ class _MyAnimalsScreenState extends State<MyAnimalsScreen> {
                                             );
                                           } catch (e) {
                                             Navigator.pop(context);
+                                            print('ERROR - $e');
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               const SnackBar(content: Text('Download failed')),
                                             );

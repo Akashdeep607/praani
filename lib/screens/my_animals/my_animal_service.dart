@@ -156,37 +156,38 @@ class AnimalService {
       throw Exception('Failed to delete animal');
     }
   }
-Future<AnimalPhotoUploadResponse> uploadAnimalImage({
+
+  Future<AnimalPhotoUploadResponse> uploadAnimalImage({
     required String token,
     required File imageFile,
   }) async {
     try {
-    final uri = Uri.parse('$baseUrl/praani-aadhar/v1/upload-photo');
+      final uri = Uri.parse('$baseUrl/praani-aadhar/v1/upload-photo');
 
-    // Generate random string
-    String randomString(int length) {
-      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-      final rand = Random();
-      return List.generate(length, (_) => chars[rand.nextInt(chars.length)]).join();
-    }
+      // Generate random string
+      String randomString(int length) {
+        const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        final rand = Random();
+        return List.generate(length, (_) => chars[rand.nextInt(chars.length)]).join();
+      }
 
       // Generate filename
-    final extension = imageFile.path.split('.').last;
-    final timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
-    final filename = 'Photo_${randomString(10)}_$timestamp.$extension';
+      final extension = imageFile.path.split('.').last;
+      final timestamp = DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+      final filename = 'Photo_${randomString(10)}_$timestamp.$extension';
 
-    final request = http.MultipartRequest('POST', uri)
-      ..headers['Authorization'] = 'Bearer $token'
-      ..files.add(
-        await http.MultipartFile.fromPath(
-          'photo',
-          imageFile.path,
+      final request = http.MultipartRequest('POST', uri)
+        ..headers['Authorization'] = 'Bearer $token'
+        ..files.add(
+          await http.MultipartFile.fromPath(
+            'photo',
+            imageFile.path,
             filename: filename,
-        ),
-      );
+          ),
+        );
 
-    final streamedResponse = await request.send();
-    final response = await http.Response.fromStream(streamedResponse);
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
 
       // Status check
       //   if (response.statusCode != 200 || response.statusCode != 201) {
@@ -195,17 +196,16 @@ Future<AnimalPhotoUploadResponse> uploadAnimalImage({
       //     );
       // }
 
-    final decoded = jsonDecode(response.body);
+      final decoded = jsonDecode(response.body);
 
       // Business logic validation
-    if (decoded['success'] != true || decoded['attachment_id'] == null) {
+      if (decoded['success'] != true || decoded['attachment_id'] == null) {
         throw FormatException(
           decoded['message'] ?? 'Invalid response format',
         );
-    }
+      }
 
-    return AnimalPhotoUploadResponse.fromJson(decoded);
-
+      return AnimalPhotoUploadResponse.fromJson(decoded);
     } on SocketException catch (e) {
       // Network issue
       throw Exception('No Internet connection: ${e.message}');
@@ -224,14 +224,13 @@ Future<AnimalPhotoUploadResponse> uploadAnimalImage({
 
       throw Exception('Something went wrong while uploading photo');
     }
-}
+  }
 
   Future<File> downloadPdfFromUrl({
     required String pdfUrl,
     required String fileName,
   }) async {
     final response = await http.get(Uri.parse(pdfUrl));
-
     if (response.statusCode != 200) {
       throw Exception('Failed to download PDF');
     }
@@ -278,7 +277,7 @@ Future<AnimalPhotoUploadResponse> uploadAnimalImage({
 
     // Step 2: Download PDF using pdf_url
     return downloadPdfFromUrl(
-      pdfUrl: meta.pdfUrl,
+      pdfUrl: meta.pdfPath,
       fileName: meta.aadharId.replaceAll(' ', '_'),
     );
   }

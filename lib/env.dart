@@ -82,7 +82,7 @@ Map<String, dynamic> environment = {
   },
   "appRatingConfig": {
     'showOnOpen': false,
-    'android': 'com.inspireui.fluxstore',
+    'android': 'com.app.praanisakha',
     'ios': '1469772800',
     'minDays': 7,
     'minLaunches': 10,
@@ -619,7 +619,7 @@ Map<String, dynamic> environment = {
 
         /// Android package name - must match the package name in android/app/build.gradle
         /// Used for Android App Links verification
-        'androidPackage': 'com.inspireui.fluxstore',
+        'androidPackage': 'com.app.praanisakha',
 
         /// App store url of your app, when set if the app is not installed,
         ///  it will redirect the user to app store, if not set, if will redirect user to fallback link
@@ -627,7 +627,7 @@ Map<String, dynamic> environment = {
 
         /// Play store url of your app, when set if the app is not installed,
         ///  it will redirect the user to play store, if not set, if will redirect user to fallback link
-        'androidUrl': "https://play.google.com/store/apps/details?id=com.inspireui.fluxstore",
+        'androidUrl': "https://play.google.com/store/apps/details?id=com.app.praanisakha",
       },
       "branchIO": {
         "testMode": true,
@@ -1030,12 +1030,12 @@ Map<String, dynamic> environment = {
     },
     "applePayConfig": {
       "enable": false,
-      "merchantId": "merchant.com.inspireui.fluxstore",
+      "merchantId": "merchant.com.app.praanisakha",
     },
     "googlePayConfig": {
       "enable": false,
       "stripePublishableKey": "pk_test_O3awus9i5mA2wIX9a7pU3MSi00gZPcpJWX",
-      "merchantId": "merchant.com.inspireui.fluxstore"
+      "merchantId": "merchant.com.app.praanisakha"
     },
   },
   "stripeConfig": {
@@ -1062,7 +1062,7 @@ Map<String, dynamic> environment = {
   "paypalConfig": {
     "clientId": "ASlpjFreiGp3gggRKo6YzXMyGM6-NwndBAQ707k6z3-WkSSMTPDfEFmNmky6dBX00lik8wKdToWiJj5w",
     "secret": "ECbFREri7NFj64FI_9WzS6A0Az2DqNLrVokBo0ZBu4enHZKMKOvX45v9Y1NBPKFr6QJv2KaSp5vk5A1G",
-    "returnUrl": "com.inspireui.fluxstore://paypalpay", // Example: "your.android.package.name:://paypalpay"
+    "returnUrl": "com.app.praanisakha://paypalpay", // Example: "your.android.package.name:://paypalpay"
     "production": false,
     "paymentMethodId": "paypal", //ppcp-gateway
     "enabled": false,
@@ -1118,11 +1118,11 @@ Map<String, dynamic> environment = {
   "midtransConfig": {'paymentMethodId': 'midtrans', 'clientKey': 'SB-Mid-client-he8W_FIlvugfA2RD', 'enabled': false},
   "inAppPurchaseConfig": {
     'consumableProductIDs': [
-      'com.inspireui.fluxstore.test',
+      'com.app.praanisakha.test',
     ],
     'nonConsumableProductIDs': [],
     'subscriptionProductIDs': [
-      'com.inspireui.fluxstore.subscription.test',
+      'com.app.praanisakha.subscription.test',
     ],
     "enabled": false
   },
@@ -1159,7 +1159,7 @@ Map<String, dynamic> environment = {
     'merchantId': 'GANGSTARPGUAT',
     'saltKey': '7eb940c6-b785-42e2-98ca-0419ebf5a219',
     'saltKeyIndex': '1',
-    "androidPackageName": "com.inspireui.fluxstore",
+    "androidPackageName": "com.app.praanisakha",
     "iOSBundleId": "com.inspireui.mstore.flutter",
     'production': false,
     'enabled': false

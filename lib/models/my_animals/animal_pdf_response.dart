@@ -1,19 +1,22 @@
 class AnimalPdfResponse {
   final String pdfUrl;
   final String aadharId;
-  final String animalName;
+  final String pdfPath;
+  final bool success;
 
   AnimalPdfResponse({
     required this.pdfUrl,
     required this.aadharId,
-    required this.animalName,
+    required this.pdfPath,
+    required this.success,
   });
 
   factory AnimalPdfResponse.fromJson(Map<String, dynamic> json) {
     return AnimalPdfResponse(
-      pdfUrl: json['pdf_url'],
-      aadharId: json['aadhar_id'],
-      animalName: json['animal_name'],
+      pdfUrl: json['download_url'] ?? '',
+      aadharId: json['aadhar_id'] ?? '',
+      pdfPath: json['pdf_path'] ?? '',
+      success: json['success'] ?? false,
     );
   }
 }
